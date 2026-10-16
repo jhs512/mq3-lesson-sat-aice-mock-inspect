@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "id": "sat-aice-mock-inspect",
-  "revision": "v1.0.0",
+  "revision": "v1.0.1",
   "title": "모의문제 · 표와 그래프를 읽어요",
   "description": "분석·전처리 범위의 자체 모의문제예요. 필수 5문제와 선택 도전 1문제예요.",
   "sources": [
@@ -47,7 +47,7 @@
         {
           "action": "set_code",
           "code": "import pandas as pd\n# 회원 자료를 읽을 자리예요.\ndf = pd.read_csv('data/delivery.csv')\nprint(df.tail(3).to_string(index=False))\n",
-          "say": "준비 코드를 먼저 실행해 볼게요."
+          "say": "먼저 준비 코드를 실행해 볼게요."
         },
         {
           "action": "run",
@@ -56,7 +56,7 @@
         {
           "action": "say",
           "target": "output",
-          "text": "실행 결과를 비교해요.   229         8     57.0    Rain"
+          "text": "열 이름에 배달 자료의 항목이 보이죠? 회원 자료를 읽어야 하는 문제예요."
         },
         {
           "action": "say",
@@ -67,7 +67,7 @@
           "action": "patch_code",
           "before": "'data/delivery.csv'",
           "after": "'data/members.csv'",
-          "say": "작은 부분을 바꿔 원리를 확인해요."
+          "say": "읽을 파일을 회원 자료로 바꿔요. 분석 전에 파일과 열 이름부터 맞추는 거예요."
         },
         {
           "action": "run"
@@ -75,7 +75,7 @@
         {
           "action": "say",
           "target": "output",
-          "text": "실행 결과를 비교해요.  60.0 27000   West Silver      0"
+          "text": "회원 자료의 열 이름이 나왔는지 보세요. 파일을 읽었다는 것만으로는 충분하지 않아요."
         },
         {
           "action": "submit"
@@ -112,7 +112,7 @@
         {
           "action": "set_code",
           "code": "import pandas as pd\n# 각 문제는 자기 자료를 처음부터 읽어요.\ndf = pd.read_csv('data/members.csv')\n# 표 전체의 결측 개수를 세어요.\ntotal = df.isna().sum().mean()\nprint(total)\n",
-          "say": "준비 코드를 먼저 실행해 볼게요."
+          "say": "먼저 준비 코드를 실행해 볼게요."
         },
         {
           "action": "run",
@@ -121,7 +121,7 @@
         {
           "action": "say",
           "target": "output",
-          "text": "실행 결과를 비교해요. 0.5"
+          "text": "지금은 열별 빈칸 수의 평균을 구해요. 전체 빈칸 개수와는 달라요."
         },
         {
           "action": "say",
@@ -132,7 +132,7 @@
           "action": "patch_code",
           "before": ".sum().mean()",
           "after": ".sum().sum()",
-          "say": "작은 부분을 바꿔 원리를 확인해요."
+          "say": "열마다 센 빈칸 수를 모두 더해요. 표 전체의 빈칸 수를 얻는 거예요."
         },
         {
           "action": "run"
@@ -140,7 +140,7 @@
         {
           "action": "say",
           "target": "output",
-          "text": "실행 결과를 비교해요. 3"
+          "text": "출력이 전체 빈칸 개수인지 확인하세요. 평균과 합계 중 질문에 맞는 것을 골라야 해요."
         },
         {
           "action": "submit"
@@ -177,7 +177,7 @@
         {
           "action": "set_code",
           "code": "import pandas as pd\n# 각 문제는 자기 자료를 처음부터 읽어요.\ndf = pd.read_csv('data/members.csv')\nimport matplotlib.pyplot as plt\n# 지역별 행 수를 막대로 보여 줘요.\ncounts = df.groupby('region')['fee'].sum()\ncounts.plot.bar()\nplt.xlabel('region')\nplt.ylabel('members')\nplt.tight_layout()\nplt.show()\n",
-          "say": "준비 코드를 먼저 실행해 볼게요."
+          "say": "먼저 준비 코드를 실행해 볼게요."
         },
         {
           "action": "run",
@@ -186,7 +186,7 @@
         {
           "action": "say",
           "target": "output",
-          "text": "실행 결과를 비교해요. 출력이 없어요"
+          "text": "지금 막대 높이는 지역별 요금 합계예요. 사람 수를 보여 주는 그림이 아니에요."
         },
         {
           "action": "say",
@@ -197,7 +197,7 @@
           "action": "patch_code",
           "before": "df.groupby('region')['fee'].sum()",
           "after": "df.groupby('region').size()",
-          "say": "작은 부분을 바꿔 원리를 확인해요."
+          "say": "지역별 행 개수를 세요. 한 행이 한 회원이므로 인원수가 돼요."
         },
         {
           "action": "run"
@@ -205,7 +205,7 @@
         {
           "action": "say",
           "target": "output",
-          "text": "실행 결과를 비교해요. 출력이 없어요"
+          "text": "지역별 인원수가 막대 높이가 됐어요. 요금 합계와 인원수는 다른 통계예요."
         },
         {
           "action": "submit"
@@ -242,7 +242,7 @@
         {
           "action": "set_code",
           "code": "import pandas as pd\n# 각 문제는 자기 자료를 처음부터 읽어요.\ndf = pd.read_csv('data/delivery.csv')\nimport matplotlib.pyplot as plt\n# 그래프에 쓸 두 값이 모두 있는 행을 남겨요.\ndf = df.dropna(subset=['distance', 'minutes'])\n# 가로는 거리, 세로는 배달 시간이에요.\nplt.scatter(df['distance'], df['distance'])\nplt.xlabel('distance')\nplt.ylabel('minutes')\nplt.tight_layout()\nplt.show()\n",
-          "say": "준비 코드를 먼저 실행해 볼게요."
+          "say": "먼저 준비 코드를 실행해 볼게요."
         },
         {
           "action": "run",
@@ -251,7 +251,7 @@
         {
           "action": "say",
           "target": "output",
-          "text": "실행 결과를 비교해요. 출력이 없어요"
+          "text": "가로축과 세로축에 같은 거리값을 넣었어요. 거리와 시간의 관계를 볼 수 없어요."
         },
         {
           "action": "say",
@@ -262,7 +262,7 @@
           "action": "patch_code",
           "before": "plt.scatter(df['distance'], df['distance'])",
           "after": "plt.scatter(df['distance'], df['minutes'])",
-          "say": "작은 부분을 바꿔 원리를 확인해요."
+          "say": "세로축을 소요 시간으로 바꿔요. 같은 행의 거리와 시간을 한 점으로 그려요."
         },
         {
           "action": "run"
@@ -270,7 +270,7 @@
         {
           "action": "say",
           "target": "output",
-          "text": "실행 결과를 비교해요. 출력이 없어요"
+          "text": "가로는 거리, 세로는 시간이에요. 점의 위치로 두 값의 관계를 살펴보세요."
         },
         {
           "action": "submit"
@@ -307,7 +307,7 @@
         {
           "action": "set_code",
           "code": "import pandas as pd\n# 각 문제는 자기 자료를 처음부터 읽어요.\ndf = pd.read_csv('data/members.csv')\n# 요금의 가운데 절반 범위를 구해요.\nq1 = df['fee'].quantile(0.25)\nq3 = df['fee'].quantile(0.75)\n# Q3가 큰 쪽이에요.\niqr = q1 - q3\nbounds = (q1 - 1.5 * iqr, q3 + 1.5 * iqr)\nprint(bounds)\n",
-          "say": "준비 코드를 먼저 실행해 볼게요."
+          "say": "먼저 준비 코드를 실행해 볼게요."
         },
         {
           "action": "run",
@@ -316,7 +316,7 @@
         {
           "action": "say",
           "target": "output",
-          "text": "실행 결과를 비교해요. 4(56625.0), np.float64(13125.0))"
+          "text": "두 사분위수를 빼는 순서를 보세요. 지금은 범위가 음수가 될 수 있어요."
         },
         {
           "action": "say",
@@ -327,7 +327,7 @@
           "action": "patch_code",
           "before": "iqr = q1 - q3",
           "after": "iqr = q3 - q1",
-          "say": "작은 부분을 바꿔 원리를 확인해요."
+          "say": "큰 사분위수에서 작은 사분위수를 빼요. 가운데 절반이 퍼진 폭을 구하는 거예요."
         },
         {
           "action": "run"
@@ -335,7 +335,7 @@
         {
           "action": "say",
           "target": "output",
-          "text": "실행 결과를 비교해요. 4(-8625.0), np.float64(78375.0))"
+          "text": "범위가 음수가 아닌지 확인하세요. 이 값을 이용해 이상값 경계를 계산해요."
         },
         {
           "action": "submit"
@@ -372,7 +372,7 @@
         {
           "action": "set_code",
           "code": "import pandas as pd\n# 각 문제는 자기 자료를 처음부터 읽어요.\ndf = pd.read_csv('data/members.csv')\n# 열마다 빠진 값의 비율을 비교해요.\nrate = df.isna().sum()\nprint(rate.round(3).to_dict())\n",
-          "say": "준비 코드를 먼저 실행해 볼게요."
+          "say": "먼저 준비 코드를 실행해 볼게요."
         },
         {
           "action": "run",
@@ -381,7 +381,7 @@
         {
           "action": "say",
           "target": "output",
-          "text": "실행 결과를 비교해요. gion': 0, 'plan': 0, 'churn': 0}"
+          "text": "지금 출력은 열별 빈칸 개수예요. 자료 크기가 다른 열과 비교하려면 비율이 필요해요."
         },
         {
           "action": "say",
@@ -392,7 +392,7 @@
           "action": "patch_code",
           "before": "df.isna().sum()",
           "after": "df.isna().mean()",
-          "say": "작은 부분을 바꿔 원리를 확인해요."
+          "say": "참과 거짓으로 된 표에서 평균을 구해요. 참의 비율이 빈칸 비율이 돼요."
         },
         {
           "action": "run"
@@ -400,7 +400,7 @@
         {
           "action": "say",
           "target": "output",
-          "text": "실행 결과를 비교해요.  0.0, 'plan': 0.0, 'churn': 0.0}"
+          "text": "각 열의 빈칸 비율을 보세요. 개수와 비율은 질문에 따라 구분해서 써요."
         },
         {
           "action": "submit"
